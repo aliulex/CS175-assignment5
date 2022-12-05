@@ -105,6 +105,13 @@ void MyGLCanvas::drawScene() {
 	glUseProgram(myShaderManager->getShaderProgram("objectShaders")->programID);
 
 	//TODO: add variable binding
+	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myProjectionMatrix"), 1, false, glm::value_ptr(perspectiveMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myModelMatrix"), 1, false, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myViewMatrix"), 1, false, glm::value_ptr(viewMatrix));
+	glUniform1i(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "objTexture"), 1);
+	glUniform3f(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glUniform1f(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "textureBlend"), textureBlend);
+	glUniform1i(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "useDiffuse"), useDiffuse);
 
 	myObjectPLY->renderVBO(myShaderManager->getShaderProgram("objectShaders")->programID);
 
@@ -114,6 +121,9 @@ void MyGLCanvas::drawScene() {
 	glUseProgram(myShaderManager->getShaderProgram("environmentShaders")->programID);
 
 	//TODO: add variable binding
+	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("environmentShaders")->programID, "myProjectionMatrix"), 1, false, glm::value_ptr(perspectiveMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("environmentShaders")->programID, "myViewMatrix"), 1, false, glm::value_ptr(viewMatrix));
+	glUniform1i(glGetUniformLocation(myShaderManager->getShaderProgram("environmentShaders")->programID, "envTexture"), 0);
 
 	myEnvironmentPLY->renderVBO(myShaderManager->getShaderProgram("environmentShaders")->programID);
 }
