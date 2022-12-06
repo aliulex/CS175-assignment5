@@ -108,6 +108,7 @@ void MyGLCanvas::drawScene() {
 	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myProjectionMatrix"), 1, false, glm::value_ptr(perspectiveMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myModelMatrix"), 1, false, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "myViewMatrix"), 1, false, glm::value_ptr(viewMatrix));
+	glUniform1i(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "envTexture"), 0);
 	glUniform1i(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "objTexture"), 1);
 	glUniform3f(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform1f(glGetUniformLocation(myShaderManager->getShaderProgram("objectShaders")->programID, "textureBlend"), textureBlend);
