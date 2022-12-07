@@ -19,6 +19,7 @@ vec2 textureLocation(vec3 point) {
 	vec2 coord;
 
 	coord.x = -atan(point.x, point.z) / (2.0 * PI) + 0.25f;
+	// coord.x = -atan(point.x, -point.z) / (2.0 * PI);
 	float r = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
 	float phi = acos(point.y / r);
 	coord.y = phi / PI;

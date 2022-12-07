@@ -57,7 +57,7 @@ ppm::ppm(std::string _fileName){
 		  if (iteration == 0) {
 			  magicNumber = delimeter_pointer;
 			  std::cout << "Magic Number: " << magicNumber << std::endl;
-			  if (magicNumber.compare("P3") != 0) {
+			  if (magicNumber.compare("P3") != 0 && magicNumber.compare("P3\r") != 0) {
 				  std::cout <<  "Incorrect image file format.Cannot load texutre" << std::endl;
 				  break;
 			  }
