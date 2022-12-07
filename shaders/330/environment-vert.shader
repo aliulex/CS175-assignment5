@@ -9,7 +9,6 @@ out vec3 objPos;
 void main()
 {
 	objPos = myPosition;
-	vec3 tmpPos = myPosition * 7;
-	gl_Position = myProjectionMatrix * myViewMatrix * vec4(tmpPos, 1.0);
+	gl_Position = myProjectionMatrix * myViewMatrix * vec4(myPosition * 7, 1.0);
 }
 
