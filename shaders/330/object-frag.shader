@@ -27,11 +27,11 @@ void main()
 {
 	vec3 worldRay = normalize(worldPos);
 
-	vec3 worldReflect = reflect(worldRay, objNormal); 
+	vec3 worldReflect = reflect(worldRay, worldNormal); 
 	vec3 objReflect = inverse(mat3(myViewMatrix)) * normalize(worldReflect);
     vec3 lightDir = normalize(lightPos);
 
-    float diffuse = useDiffuse == 1 ? dot(lightDir, worldNormal) : 1.0;
+    float diffuse = useDiffuse == 1 ? dot(lightDir, objNormal) : 1.0;
 
     vec4 objectColor = texture(objTexture, sphericalUV(objPos));
     vec4 reflectionColor = texture(envTexture, sphericalUV(objReflect));  

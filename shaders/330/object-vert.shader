@@ -19,8 +19,8 @@ void main()
     objPos = myPosition;
     worldPos = (modelViewMatrix * vec4(myPosition, 1)).xyz;
 
-    objNormal = normalize((modelViewMatrix * vec4(myNormal, 0)).xyz);
-    worldNormal = normalize(modelInverseTranspose * myNormal);
+    worldNormal = normalize((modelViewMatrix * vec4(myNormal, 0)).xyz);
+    objNormal = normalize(modelInverseTranspose * myNormal);
 
     gl_Position = myProjectionMatrix * modelViewMatrix * vec4(myPosition, 1);
 }
