@@ -29,10 +29,9 @@ void main()
 
 	vec3 worldReflect = reflect(worldRay, objNormal); 
 	vec3 objReflect = inverse(mat3(myViewMatrix)) * normalize(worldReflect);
+    vec3 lightDir = normalize(lightPos);
 
-	float diffuse = 1.0;
-	if (useDiffuse == 1) 
-		diffuse = dot(normalize(lightPos), worldNormal);
+    float diffuse = useDiffuse == 1 ? dot(lightDir, worldNormal) : 1.0;
 
     vec4 objectColor = texture(objTexture, sphericalUV(objPos));
     vec4 reflectionColor = texture(envTexture, sphericalUV(objReflect));  

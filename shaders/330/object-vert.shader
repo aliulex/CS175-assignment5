@@ -14,11 +14,13 @@ out vec3 worldNormal;
 void main()
 {
     mat4 modelViewMatrix = myViewMatrix * myModelMatrix;
+    mat3 modelInverseTranspose = transpose(inverse(mat3(myModelMatrix))); 
 
     objPos = myPosition;
     worldPos = (modelViewMatrix * vec4(myPosition, 1)).xyz;
+
     objNormal = normalize((modelViewMatrix * vec4(myNormal, 0)).xyz);
-    worldNormal  = normalize(transpose(inverse(mat3(myModelMatrix))) * myNormal.xyz);
+    worldNormal = normalize(modelInverseTranspose * myNormal);
 
     gl_Position = myProjectionMatrix * modelViewMatrix * vec4(myPosition, 1);
 }
