@@ -46,5 +46,5 @@ void main()
 
     vec4 objectColor = texture(objTexture, textureLocation(vertexPos_objCoord));
     vec4 reflectionColor = texture(envTexture, textureLocation(worldReflect));  
-    outputColor = mix(reflectionColor, objectColor * diffuse, textureBlend);
+    outputColor = diffuse * mix(reflectionColor, objectColor, textureBlend);
 }
