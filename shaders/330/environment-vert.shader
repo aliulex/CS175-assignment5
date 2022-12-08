@@ -6,9 +6,12 @@ in vec3 myNormal;
 in vec3 myPosition;
 out vec3 objPos;
 
+const float SCALE = 7.0;
+
 void main()
 {
 	objPos = myPosition;
-	gl_Position = myProjectionMatrix * myViewMatrix * vec4(myPosition * 7, 1.0);
+    vec4 scaledPosition = vec4(myPosition * SCALE, 1.0);
+	gl_Position = myProjectionMatrix * myViewMatrix * scaledPosition;
 }
 

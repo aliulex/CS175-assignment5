@@ -1,19 +1,20 @@
 #version 330
 
-const float PI = 3.14159;
+const float PI = 3.14159265358979323;
 
 uniform sampler2D envTexture;
 in vec3 objPos;
 out vec4 outputColor;
 
-vec2 textureLocation(vec3 pos) {
-	float theta = atan(pos.z, pos.x);
-    vec2 coord = vec2(theta / (2.0 * PI), acos(pos.y / length(pos)) / PI);
-    return coord;
+vec2 sphericalUV(vec3 p) {
+    vec2 uv;
+    uv.x = atan(p.z, p.x) * .5;
+    uv.y = acos(p.y / length(p));
+    return uv / PI;
 }
 
 void main()
 {	
-	vec2 texCoord = textureLocation(normalize(objPos));
+	vec2 texCoord = sphericalUV(normalize(objPos));
 	outputColor = texture(envTexture, texCoord);
 }

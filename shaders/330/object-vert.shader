@@ -6,21 +6,20 @@ uniform mat4 myViewMatrix;
 uniform vec3 lightPos;
 in vec3 myNormal;
 in vec3 myPosition;
-out vec3 vertexPos_CameraCoord;
-out vec3 vertexNormal_CameraCoord;
-out vec3 vertexPos_objCoord;
-out vec3 lightPos_objCoord;
-out vec3 normal_worldCoord;
+out vec3 worldPos;
+out vec3 objNormal;
+out vec3 objPos;
+out vec3 worldNormal;
 
 void main()
 {
-    vec4 worldPos = myProjectionMatrix * myViewMatrix * myModelMatrix * vec4(myPosition, 1.0);
-	gl_Position = worldPos;
+    mat4 modelViewMatrix = myViewMatrix * myModelMatrix;
 
-    vertexPos_CameraCoord = vec3(myViewMatrix * myModelMatrix * vec4(myPosition, 1.0));
-    vertexNormal_CameraCoord = vec3(normalize(myViewMatrix * myModelMatrix * vec4(myNormal, 0.0)));
-    vertexPos_objCoord = myPosition;
-    lightPos_objCoord  = (myModelMatrix * vec4(lightPos, 1.0)).xyz;
-    normal_worldCoord  = vec3(transpose(inverse(myModelMatrix)) * vec4(myNormal, 1.0));
+    objPos = myPosition;
+    worldPos = (modelViewMatrix * vec4(myPosition, 1)).xyz;
+    objNormal = normalize((modelViewMatrix * vec4(myNormal, 0)).xyz);
+    worldNormal  = normalize(transpose(inverse(mat3(myModelMatrix))) * myNormal.xyz);
+
+    gl_Position = myProjectionMatrix * modelViewMatrix * vec4(myPosition, 1);
 }
 

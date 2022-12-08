@@ -1,50 +1,40 @@
 #version 330
 
-#define PI 3.1415926535897932384626433832795
+const float PI = 3.14159265358979323;
 
-uniform mat4 myViewMatrix;
 uniform sampler2D objTexture;
 uniform sampler2D envTexture;
-uniform vec3 lightPos;
 uniform float textureBlend;
+uniform mat4 myViewMatrix;
+uniform vec3 lightPos;
 uniform int useDiffuse;
-in vec3 vertexPos_CameraCoord;
-in vec3 vertexNormal_CameraCoord;
-in vec3 vertexPos_objCoord;
-in vec3 normal_worldCoord;
+
+in vec3 worldPos;
+in vec3 objNormal;
+in vec3 objPos;
+in vec3 worldNormal;
+
 out vec4 outputColor;
 
-vec2 textureLocation(vec3 point) {
-	vec2 coord;
-
-	coord.x = -atan(point.x, point.z) / (2.0 * PI) + 0.25f;
-	float r = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
-	float phi = acos(point.y / r);
-	coord.y = phi / PI;
-    return coord;
-    
-
-	coord.x = -atan(point.x, point.z) / (2.0 * PI) + 0.25f;
-	r = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
-	phi = acos(point.y / r);
-	coord.y = phi / PI;
-
-	return coord;
+vec2 sphericalUV(vec3 p) {
+    vec2 uv;
+    uv.x = atan(p.z, p.x) * .5;
+    uv.y = acos(p.y / length(p));
+    return uv / PI;
 }
 
 void main()
 {
-	vec3 incidentRay_CameraCoord = normalize(vertexPos_CameraCoord);
+	vec3 worldRay = normalize(worldPos);
 
-	vec3 objReflect = reflect(incidentRay_CameraCoord, vertexNormal_CameraCoord); 
-	vec3 worldReflect = inverse(mat3(myViewMatrix)) * normalize(objReflect);
+	vec3 worldReflect = reflect(worldRay, objNormal); 
+	vec3 objReflect = inverse(mat3(myViewMatrix)) * normalize(worldReflect);
 
 	float diffuse = 1.0;
-	if (useDiffuse == 1) {
-		diffuse = dot(normalize(lightPos), normalize(normal_worldCoord));
-	}
+	if (useDiffuse == 1) 
+		diffuse = dot(normalize(lightPos), worldNormal);
 
-    vec4 objectColor = texture(objTexture, textureLocation(vertexPos_objCoord));
-    vec4 reflectionColor = texture(envTexture, textureLocation(worldReflect));  
+    vec4 objectColor = texture(objTexture, sphericalUV(objPos));
+    vec4 reflectionColor = texture(envTexture, sphericalUV(objReflect));  
     outputColor = diffuse * mix(reflectionColor, objectColor, textureBlend);
 }
